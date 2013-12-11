@@ -193,6 +193,8 @@ public class CallFeaturesSetting extends PreferenceActivity
 
     private static final String DIALKEY_PADDING = "dialkey_padding";
 
+    private static final String BUTTON_PROXIMITY_KEY   = "button_proximity_key";
+
     private static final String BUTTON_GSM_UMTS_OPTIONS = "button_gsm_more_expand_key";
     private static final String BUTTON_CDMA_OPTIONS = "button_cdma_more_expand_key";
 
@@ -342,6 +344,7 @@ public class CallFeaturesSetting extends PreferenceActivity
     private ListPreference mChoosePeopleLookupProvider;
     private ListPreference mChooseReverseLookupProvider;
     private ListPreference mT9SearchInputLocale;
+    private CheckBoxPreference mButtonProximity;
 
     private ListPreference mFlipAction;
 
@@ -652,10 +655,16 @@ public class CallFeaturesSetting extends PreferenceActivity
         } else if (preference == mNonIntrusiveUI){
             Settings.Nameless.putBoolean(mPhone.getContext().getContentResolver(),
                     Settings.Nameless.NON_INTRUSIVE_UI, (Boolean) objValue);
-       } else if (preference == mDialkeyPadding) {
+        } else if (preference == mDialkeyPadding) {
             final int val = Integer.valueOf((String) objValue);
             Settings.System.putInt(getContentResolver(),
                     Settings.System.DIALKEY_PADDING, val);
+        } else if (preference == mButtonProximity) {
+            boolean checked = (Boolean) objValue;
+            Settings.System.putInt(mPhone.getContext().getContentResolver(),
+                    Constants.SETTINGS_PROXIMITY_SENSOR, checked ? 1 : 0);
+            mButtonProximity.setSummary(checked ? R.string.proximity_on_summary
+                    : R.string.proximity_off_summary);
         } else if (preference == mVoicemailProviders) {
             final String newProviderKey = (String) objValue;
             if (DBG) {
@@ -1686,6 +1695,7 @@ public class CallFeaturesSetting extends PreferenceActivity
         mButtonBlacklist = (PreferenceScreen) findPreference(BUTTON_BLACKLIST);
         mT9SearchInputLocale = (ListPreference) findPreference(BUTTON_T9_SEARCH_INPUT_LOCALE);
         mIncomingCallStyle = (ListPreference) findPreference(BUTTON_INCOMING_CALL_STYLE);
+        mButtonProximity = (CheckBoxPreference) findPreference(BUTTON_PROXIMITY_KEY);
 
         if (mDialkeyPadding != null) {
             mDialkeyPadding.setOnPreferenceChangeListener(this);
@@ -1728,6 +1738,15 @@ public class CallFeaturesSetting extends PreferenceActivity
             } else {
                 prefSet.removePreference(mButtonDTMF);
                 mButtonDTMF = null;
+            }
+        }
+
+        if (mButtonProximity != null) {
+            if (getResources().getBoolean(R.bool.config_proximity_enable)) {
+                mButtonProximity.setOnPreferenceChangeListener(this);
+            } else {
+                prefSet.removePreference(mButtonProximity);
+                mButtonProximity = null;
             }
         }
 
@@ -2077,6 +2096,14 @@ public class CallFeaturesSetting extends PreferenceActivity
                     Settings.System.FLIP_ACTION_KEY, 0);
             mFlipAction.setValue(Integer.toString(flipAction));
             updateFlipActionSummary(mFlipAction.getValue());
+        }
+
+        if (mButtonProximity != null) {
+            boolean checked = Settings.System.getInt(getContentResolver(),
+                    Constants.SETTINGS_PROXIMITY_SENSOR, 1) == 1;
+            mButtonProximity.setChecked(checked);
+            mButtonProximity.setSummary(checked ? R.string.proximity_on_summary
+                    : R.string.proximity_off_summary);
         }
 
         lookupRingtoneName();
