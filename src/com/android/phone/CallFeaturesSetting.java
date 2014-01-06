@@ -348,6 +348,8 @@ public class CallFeaturesSetting extends PreferenceActivity
     private ListPreference mT9SearchInputLocale;
     private CheckBoxPreference mButtonProximity;
 
+    private ListPreference mFlipAction;
+
     private class VoiceMailProvider {
         public VoiceMailProvider(String name, Intent intent) {
             this.name = name;
@@ -366,6 +368,8 @@ public class CallFeaturesSetting extends PreferenceActivity
             CommandsInterface.CF_REASON_NO_REPLY,
             CommandsInterface.CF_REASON_NOT_REACHABLE
     };
+
+    private static final CharSequence FLIP_ACTION_KEY = "flip_action";
 
     private class VoiceMailProviderSettings {
         /**
@@ -715,9 +719,22 @@ public class CallFeaturesSetting extends PreferenceActivity
             saveLookupProviderSetting(preference, (String) objValue);
         } else if (preference == mT9SearchInputLocale) {
             saveT9SearchInputLocale(preference, (String) objValue);
+        } else if (preference == mFlipAction) {
+            final int value = Integer.parseInt((String) objValue);
+            Settings.System.putInt(mPhone.getContext().getContentResolver(),
+                    Settings.System.FLIP_ACTION_KEY, value);
+            updateFlipActionSummary((String) objValue);
         }
         // always let the preference setting proceed.
         return true;
+    }
+
+    private void updateFlipActionSummary(String action) {
+        int i = Integer.parseInt(action);
+        if (mFlipAction != null) {
+            String[] summaries = getResources().getStringArray(R.array.flip_action_summary_entries);
+            mFlipAction.setSummary(getString(R.string.flip_action_summary, summaries[i]));
+        }
     }
 
     @Override
@@ -1655,6 +1672,7 @@ public class CallFeaturesSetting extends PreferenceActivity
         mIncomingCallStyle = (ListPreference) findPreference(BUTTON_INCOMING_CALL_STYLE);
         mButtonProximity = (CheckBoxPreference) findPreference(BUTTON_PROXIMITY_KEY);
         mIPPrefix = (PreferenceScreen) findPreference(BUTTON_IPPREFIX_KEY);
+        mFlipAction = (ListPreference) findPreference(FLIP_ACTION_KEY);
 
         if (mT9SearchInputLocale != null) {
             initT9SearchInputPreferenceList();
@@ -1711,6 +1729,12 @@ public class CallFeaturesSetting extends PreferenceActivity
             if (getResources().getBoolean(R.bool.has_in_call_noise_suppression)) {
                 mButtonNoiseSuppression.setOnPreferenceChangeListener(this);
             }
+
+        if (mFlipAction != null) {
+            mFlipAction.setOnPreferenceChangeListener(this);
+            int flipAction = Settings.System.getInt(mPhone.getContext().getContentResolver(),
+                    Settings.System.FLIP_ACTION_KEY, 0);
+            mFlipAction.setValue(Integer.toString(flipAction));
         }
 
         if (mT9SearchInputLocale != null) {
@@ -1887,6 +1911,13 @@ public class CallFeaturesSetting extends PreferenceActivity
             mButtonProximity.setChecked(checked);
             mButtonProximity.setSummary(checked ? R.string.proximity_on_summary
                     : R.string.proximity_off_summary);
+        }
+
+        if (mFlipAction != null) {
+            final int flipAction = Settings.System.getInt(getContentResolver(),
+                    Settings.System.FLIP_ACTION_KEY, 0);
+            mFlipAction.setValue(Integer.toString(flipAction));
+            updateFlipActionSummary(mFlipAction.getValue());
         }
 
         updateBlacklistSummary();
