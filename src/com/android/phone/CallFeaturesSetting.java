@@ -203,6 +203,8 @@ public class CallFeaturesSetting extends PreferenceActivity
     /* package */ static final String BUTTON_VOICEMAIL_NOTIFICATION_RINGTONE_KEY =
             "button_voicemail_notification_ringtone_key";
 
+    private static final String BUTTON_CALL_UI_IN_BACKGROUND = "bg_incall_screen";
+
     private static final String VM_NUMBERS_SHARED_PREFERENCES_NAME = "vm_numbers";
 
     private static final String BUTTON_SIP_CALL_OPTIONS =
@@ -327,6 +329,7 @@ public class CallFeaturesSetting extends PreferenceActivity
     private CheckBoxPreference mPlayDtmfTone;
     private CheckBoxPreference mButtonAutoRetry;
     private CheckBoxPreference mButtonHAC;
+    private CheckBoxPreference mButtonCallUiInBackground;
     private ListPreference mButtonDTMF;
     private ListPreference mButtonTTY;
     private CheckBoxPreference mButtonNoiseSuppression;
@@ -603,6 +606,8 @@ public class CallFeaturesSetting extends PreferenceActivity
             Settings.System.putInt(mPhone.getContext().getContentResolver(),
                     Settings.System.NOISE_SUPPRESSION, nsp);
             return true;
+        } else if (preference == mButtonCallUiInBackground) {
+            return true;
         } else if (preference == mButtonAutoRetry) {
             android.provider.Settings.Global.putInt(mPhone.getContext().getContentResolver(),
                     android.provider.Settings.Global.CALL_AUTO_RETRY,
@@ -676,6 +681,10 @@ public class CallFeaturesSetting extends PreferenceActivity
                     Constants.SETTINGS_PROXIMITY_SENSOR, checked ? 1 : 0);
             mButtonProximity.setSummary(checked ? R.string.proximity_on_summary
                     : R.string.proximity_off_summary);
+        } else if (preference == mButtonCallUiInBackground) {
+            Settings.System.putInt(mPhone.getContext().getContentResolver(),
+                    Settings.System.CALL_UI_IN_BACKGROUND,
+                    (Boolean) objValue ? 1 : 0);
         } else if (preference == mVoicemailProviders) {
             final String newProviderKey = (String) objValue;
             log("Voicemail Provider changes from \"" + mPreviousVMProviderKey
@@ -1673,6 +1682,7 @@ public class CallFeaturesSetting extends PreferenceActivity
         mButtonProximity = (CheckBoxPreference) findPreference(BUTTON_PROXIMITY_KEY);
         mIPPrefix = (PreferenceScreen) findPreference(BUTTON_IPPREFIX_KEY);
         mFlipAction = (ListPreference) findPreference(FLIP_ACTION_KEY);
+        mButtonCallUiInBackground = (CheckBoxPreference) findPreference(BUTTON_CALL_UI_IN_BACKGROUND);
 
         if (mT9SearchInputLocale != null) {
             initT9SearchInputPreferenceList();
@@ -1729,12 +1739,18 @@ public class CallFeaturesSetting extends PreferenceActivity
             if (getResources().getBoolean(R.bool.has_in_call_noise_suppression)) {
                 mButtonNoiseSuppression.setOnPreferenceChangeListener(this);
             }
+        }
+
 
         if (mFlipAction != null) {
             mFlipAction.setOnPreferenceChangeListener(this);
             int flipAction = Settings.System.getInt(mPhone.getContext().getContentResolver(),
                     Settings.System.FLIP_ACTION_KEY, 0);
             mFlipAction.setValue(Integer.toString(flipAction));
+        }
+
+        if (mButtonCallUiInBackground != null) {
+            mButtonCallUiInBackground.setOnPreferenceChangeListener(this);
         }
 
         if (mT9SearchInputLocale != null) {
@@ -1904,13 +1920,18 @@ public class CallFeaturesSetting extends PreferenceActivity
             updatePreferredTtyModeSummary(settingsTtyMode);
         }
 
-
         if (mButtonProximity != null) {
             boolean checked = Settings.System.getInt(getContentResolver(),
                     Constants.SETTINGS_PROXIMITY_SENSOR, 1) == 1;
             mButtonProximity.setChecked(checked);
             mButtonProximity.setSummary(checked ? R.string.proximity_on_summary
                     : R.string.proximity_off_summary);
+        }
+
+        if (mButtonCallUiInBackground != null) {
+            int callUiInBackground = Settings.System.getInt(getContentResolver(),
+                    Settings.System.CALL_UI_IN_BACKGROUND, 0);
+            mButtonCallUiInBackground.setChecked(callUiInBackground != 0);
         }
 
         if (mFlipAction != null) {

@@ -55,4 +55,9 @@
         <item>@string/summary_mute_ringer</item>
         <item>@string/summary_dismiss_call</item>
     </string-array>
+
+    <!-- Call UI in background -->
+    <string name="bg_incall">Incoming call in background</string>
+    <string name="bg_incall_summary">Keep incoming call UI in background when screen is on, show notification and play ringtone only</string>
+
 </resources>
