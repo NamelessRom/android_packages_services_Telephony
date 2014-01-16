@@ -36,7 +36,7 @@
             android:defaultValue="false" />
     </PreferenceCategory>
 
-  <PreferenceCategory
+    <PreferenceCategory
       android:title="@string/incall_vibration">
 
       <CheckBoxPreference
@@ -60,14 +60,29 @@
           android:persistent="true"
           android:summary="@string/vibrate_45_sum" />
 
-  </PreferenceCategory>
+    </PreferenceCategory>
 
-  <PreferenceCategory
+    <PreferenceCategory
       android:key="button_misc_category_key"
       android:title="@string/other_settings"
-      android:persistent="false" />
+      android:persistent="false">
 
-  <PreferenceScreen
+      <CheckBoxPreference
+          android:key="button_enable_suggestions"
+          android:title="@string/enable_suggestions_title"
+          android:summary="@string/enable_suggestions_summary"
+          android:defaultValue="true"
+          android:persistent="false" />
+
+      <CheckBoxPreference
+          android:key="button_enable_reverse_lookup"
+          android:title="@string/enable_reverse_lookup_title"
+          android:summary="@string/enable_reverse_lookup_summary"
+          android:defaultValue="true"
+          android:persistent="false" />
+    </PreferenceCategory>
+
+    <PreferenceScreen
       android:key="button_voicemail_category_key"
       android:title="@string/voicemail"
       android:persistent="false">
@@ -120,9 +135,9 @@
           android:title="@string/voicemail_notification_vibrate_when_title"
           android:persistent="true"
           />
-  </PreferenceScreen>
+    </PreferenceScreen>
 
-  <PreferenceScreen
+    <PreferenceScreen
       android:key="button_blacklist"
       android:title="@string/blacklist_title"
       android:persistent="false">
