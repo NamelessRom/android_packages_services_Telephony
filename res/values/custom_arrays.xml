@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  *    Copyright (C) 2013 The NamelessROM Project
+  *
+  *    This program is free software: you can redistribute it and/or modify
+  *    it under the terms of the GNU General Public License as published by
+  *    the Free Software Foundation, either version 3 of the License, or
+  *    (at your option) any later version.
+  *
+  *    This program is distributed in the hope that it will be useful,
+  *    but WITHOUT ANY WARRANTY; without even the implied warranty of
+  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  *    GNU General Public License for more details.
+  *
+  *    You should have received a copy of the GNU General Public License
+  *    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+-->
+
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+<string-array translatable="false" name="forward_lookup_providers">
+        <item>Google</item>
+        <item>OpenStreetMap</item>
+    </string-array>
+
+    <string-array translatable="true" name="forward_lookup_provider_names">
+        <item>Google</item>
+        <item>OpenStreetMap</item>
+    </string-array>
+
+    <string-array translatable="false" name="reverse_lookup_providers">
+        <item>Google</item>
+        <item>OpenCnam</item>
+        <item>WhitePages</item>
+        <item>YellowPages</item>
+        <item>ZabaSearch</item>
+    </string-array>
+
+    <string-array translatable="true" name="reverse_lookup_provider_names">
+        <item>Google (Businesses)</item>
+        <item>OpenCnam (US)</item>
+        <item>WhitePages (US)</item>
+        <item>YellowPages (US)</item>
+        <item>ZabaSearch (US)</item>
+    </string-array>
+
+</resources>

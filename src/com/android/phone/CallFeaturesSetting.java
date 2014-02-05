@@ -50,6 +50,7 @@ import android.preference.PreferenceActivity;
 import android.preference.PreferenceGroup;
 import android.preference.PreferenceManager;
 import android.preference.PreferenceScreen;
+import android.preference.SwitchPreference;
 import android.provider.ContactsContract.CommonDataKinds;
 import android.provider.MediaStore;
 import android.provider.Settings;
@@ -192,14 +193,16 @@ public class CallFeaturesSetting extends PreferenceActivity
 
     private static final String VM_NUMBERS_SHARED_PREFERENCES_NAME = "vm_numbers";
 
-    private static final String BUTTON_SIP_CALL_OPTIONS =
-            "sip_call_options_key";
-    private static final String BUTTON_SIP_CALL_OPTIONS_WIFI_ONLY =
-            "sip_call_options_wifi_only_key";
-    private static final String SIP_SETTINGS_CATEGORY_KEY =
-            "sip_settings_category_key";
+    private static final String BUTTON_SIP_CALL_OPTIONS = "sip_call_options_key";
+    private static final String BUTTON_SIP_CALL_OPTIONS_WIFI_ONLY = "sip_call_options_wifi_only_key";
+    private static final String SIP_SETTINGS_CATEGORY_KEY = "sip_settings_category_key";
 
     private static final String BUTTON_NON_INTRUSIVE_INCALL_KEY = "button_non_intrusive_incall";
+
+    private static final String SWITCH_ENABLE_FORWARD_LOOKUP = "switch_enable_forward_lookup";
+    private static final String SWITCH_ENABLE_REVERSE_LOOKUP = "switch_enable_reverse_lookup";
+    private static final String BUTTON_CHOOSE_FORWARD_LOOKUP_PROVIDER = "button_choose_forward_lookup_provider";
+    private static final String BUTTON_CHOOSE_REVERSE_LOOKUP_PROVIDER = "button_choose_reverse_lookup_provider";
 
     private Intent mContactListIntent;
 
@@ -292,6 +295,10 @@ public class CallFeaturesSetting extends PreferenceActivity
     private SipSharedPreferences mSipSharedPreferences;
     private PreferenceScreen mButtonBlacklist;
     private CheckBoxPreference mNonIntrusiveInCall;
+	private SwitchPreference mEnableForwardLookup;
+    private SwitchPreference mEnableReverseLookup;
+    private ListPreference mChooseForwardLookupProvider;
+    private ListPreference mChooseReverseLookupProvider;
 
     private class VoiceMailProvider {
         public VoiceMailProvider(String name, Intent intent) {
@@ -624,6 +631,12 @@ public class CallFeaturesSetting extends PreferenceActivity
             }
         } else if (preference == mButtonSipCallOptions) {
             handleSipCallOptionsChange(objValue);
+        } else if (preference == mEnableForwardLookup
+                || preference == mEnableReverseLookup) {
+            saveLookupProviderSwitches(preference, (Boolean) objValue);
+        } else if (preference == mChooseForwardLookupProvider
+                || preference == mChooseReverseLookupProvider) {
+            saveLookupProviders(preference, (String) objValue);
         }
         // always let the preference setting proceed.
         return true;
@@ -1670,6 +1683,26 @@ public class CallFeaturesSetting extends PreferenceActivity
         mNonIntrusiveInCall.setChecked(Settings.System.getInt(getContentResolver(),
                 Settings.System.NON_INTRUSIVE_INCALL, 1) == 0 ? false : true);
 
+        mEnableForwardLookup = (SwitchPreference)
+                findPreference(SWITCH_ENABLE_FORWARD_LOOKUP);
+        mEnableReverseLookup = (SwitchPreference)
+                findPreference(SWITCH_ENABLE_REVERSE_LOOKUP);
+
+        mEnableForwardLookup.setOnPreferenceChangeListener(this);
+        mEnableReverseLookup.setOnPreferenceChangeListener(this);
+
+        restoreLookupProviderSwitches();
+
+        mChooseForwardLookupProvider = (ListPreference)
+                findPreference(BUTTON_CHOOSE_FORWARD_LOOKUP_PROVIDER);
+        mChooseReverseLookupProvider = (ListPreference)
+                findPreference(BUTTON_CHOOSE_REVERSE_LOOKUP_PROVIDER);
+
+        mChooseForwardLookupProvider.setOnPreferenceChangeListener(this);
+        mChooseReverseLookupProvider.setOnPreferenceChangeListener(this);
+
+        restoreLookupProviders();
+
         // create intent to bring up contact list
         mContactListIntent = new Intent(Intent.ACTION_GET_CONTENT);
         mContactListIntent.setType(android.provider.Contacts.Phones.CONTENT_ITEM_TYPE);
@@ -1872,6 +1905,9 @@ public class CallFeaturesSetting extends PreferenceActivity
 
         lookupRingtoneName();
         updateBlacklistSummary();
+        
+        restoreLookupProviderSwitches();
+        restoreLookupProviders();
     }
 
     private void updateBlacklistSummary() {
@@ -2021,6 +2057,75 @@ public class CallFeaturesSetting extends PreferenceActivity
             mVoicemailSettings.setIntent(provider.intent);
 
             mVoicemailNotificationVibrate.setEnabled(true);
+        }
+    }
+
+    private void saveLookupProviderSwitches(Preference pref, Boolean newValue) {
+        if (DBG) log("saveLookupProviderSwitches()");
+
+        if (pref == mEnableForwardLookup) {
+            Settings.System.putInt(getContentResolver(),
+                    Settings.System.ENABLE_FORWARD_LOOKUP,
+                    newValue ? 1 : 0);
+        } else if (pref == mEnableReverseLookup) {
+            Settings.System.putInt(getContentResolver(),
+                    Settings.System.ENABLE_REVERSE_LOOKUP,
+                    newValue ? 1 : 0);
+        }
+    }
+
+    private void restoreLookupProviderSwitches() {
+        if (DBG) log("restoreLookupProviderSwitches()");
+
+        mEnableForwardLookup.setChecked(Settings.System.getInt(
+                getContentResolver(),
+                Settings.System.ENABLE_FORWARD_LOOKUP, 1) != 0 ? true : false);
+        mEnableReverseLookup.setChecked(Settings.System.getInt(
+                getContentResolver(),
+                Settings.System.ENABLE_REVERSE_LOOKUP, 1) != 0 ? true : false);
+    }
+
+    private void restoreLookupProviders() {
+        if (DBG) log("restoreLookupProviders()");
+
+        String fProvider = Settings.System.getString(
+                getContentResolver(),
+                Settings.System.FORWARD_LOOKUP_PROVIDER);
+
+        if (fProvider == null) {
+            mChooseForwardLookupProvider.setValueIndex(0);
+            saveLookupProviders(mChooseForwardLookupProvider,
+                    (String) mChooseForwardLookupProvider.getEntryValues()[0]);
+        } else {
+            mChooseForwardLookupProvider.setValue(fProvider);
+        }
+
+        String rProvider = Settings.System.getString(
+                getContentResolver(),
+                Settings.System.REVERSE_LOOKUP_PROVIDER);
+
+        if (rProvider == null) {
+            mChooseReverseLookupProvider.setValueIndex(0);
+            saveLookupProviders(mChooseReverseLookupProvider,
+                    (String) mChooseReverseLookupProvider.getEntryValues()[0]);
+        } else {
+            mChooseReverseLookupProvider.setValue(rProvider);
+        }
+    }
+
+    private void saveLookupProviders(Preference pref, String newValue) {
+        if (DBG) log("saveLookupProviders()");
+
+        if (pref == mChooseForwardLookupProvider) {
+            Settings.System.putString(
+                    getContentResolver(),
+                    Settings.System.FORWARD_LOOKUP_PROVIDER,
+                    newValue);
+        } else if (pref == mChooseReverseLookupProvider) {
+            Settings.System.putString(
+                    getContentResolver(),
+                    Settings.System.REVERSE_LOOKUP_PROVIDER,
+                    newValue);
         }
     }
 
