@@ -666,7 +666,7 @@ public class CallFeaturesSetting extends PreferenceActivity
         } else if (preference == mFlipAction) {
             int index = mFlipAction.findIndexOfValue((String) objValue);
             Settings.System.putInt(getContentResolver(),
-                Settings.System.CALL_FLIP_ACTION_KEY, index);
+                Settings.System.FLIP_ACTION_KEY, index);
             updateFlipActionSummary(index);
         } else if (preference == mEnableForwardLookup
                 || preference == mEnableReverseLookup) {
@@ -1978,7 +1978,7 @@ public class CallFeaturesSetting extends PreferenceActivity
 
         if (mFlipAction != null) {
             int flipAction = Settings.System.getInt(getContentResolver(),
-                    Settings.System.CALL_FLIP_ACTION_KEY, 2);
+                    Settings.System.FLIP_ACTION_KEY, 2);
             mFlipAction.setValue(String.valueOf(flipAction));
             updateFlipActionSummary(flipAction);
         }
