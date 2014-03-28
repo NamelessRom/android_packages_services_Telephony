@@ -592,20 +592,6 @@ public class CallController extends Handler {
         }
     }
 
-    private boolean hasIccCard() {
-        if (MSimTelephonyManager.getDefault().isMultiSimEnabled()) {
-            MSimTelephonyManager mSimTelephonyManager = MSimTelephonyManager.getDefault();
-            for (int i = 0; i < mSimTelephonyManager.getPhoneCount(); i++)
-                if (mSimTelephonyManager.hasIccCard(i))
-                    return true;
-        } else {
-            TelephonyManager telephonyManager = TelephonyManager.getDefault();
-            if (telephonyManager.hasIccCard())
-                return true;
-        }
-        return false;
-    }
-
     /**
      * Checks the current ServiceState to make sure it's OK
      * to try making an outgoing call to the specified number.
@@ -624,9 +610,6 @@ public class CallController extends Handler {
                 return CallStatusCode.SUCCESS;
 
             case ServiceState.STATE_POWER_OFF:
-                if (!hasIccCard()) {
-                    return CallStatusCode.OUT_OF_SERVICE;
-                }
                 // Radio is explictly powered off.
                 return CallStatusCode.POWER_OFF;
 
