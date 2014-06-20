@@ -147,7 +147,16 @@
       android:title="@string/bg_incall"
       android:persistent="false"
       android:defaultValue="false"
-      android:summary="@string/bg_incall_summary"/>
+      android:summary="@string/bg_incall_summary"
+      android:disableDependentsState="true"/>
+
+  <CheckBoxPreference
+      android:key="non_intrusive_ui"
+      android:title="@string/non_intrusive_ui"
+      android:summary="@string/non_intrusive_ui_summary"
+      android:persistent="false"
+      android:defaultValue="true"
+      android:dependency="bg_incall_screen"/>
 
   <PreferenceScreen
       android:key="button_respond_via_sms_key"
