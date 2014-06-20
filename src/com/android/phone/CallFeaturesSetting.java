@@ -204,6 +204,7 @@ public class CallFeaturesSetting extends PreferenceActivity
             "button_voicemail_notification_ringtone_key";
 
     private static final String BUTTON_CALL_UI_IN_BACKGROUND = "bg_incall_screen";
+    private static final String BUTTON_NON_INTRUSIVE_UI_KEY = "non_intrusive_ui";
 
     private static final String VM_NUMBERS_SHARED_PREFERENCES_NAME = "vm_numbers";
 
@@ -330,6 +331,7 @@ public class CallFeaturesSetting extends PreferenceActivity
     private CheckBoxPreference mButtonAutoRetry;
     private CheckBoxPreference mButtonHAC;
     private CheckBoxPreference mButtonCallUiInBackground;
+    private CheckBoxPreference mNonIntrusiveUI;
     private ListPreference mButtonDTMF;
     private ListPreference mButtonTTY;
     private CheckBoxPreference mButtonNoiseSuppression;
@@ -685,6 +687,9 @@ public class CallFeaturesSetting extends PreferenceActivity
             Settings.System.putInt(mPhone.getContext().getContentResolver(),
                     Settings.System.CALL_UI_IN_BACKGROUND,
                     (Boolean) objValue ? 1 : 0);
+        } else if (preference == mNonIntrusiveUI){
+            Settings.Nameless.putBoolean(mPhone.getContext().getContentResolver(),
+                    Settings.Nameless.NON_INTRUSIVE_UI, (Boolean) objValue);
         } else if (preference == mVoicemailProviders) {
             final String newProviderKey = (String) objValue;
             log("Voicemail Provider changes from \"" + mPreviousVMProviderKey
@@ -1683,6 +1688,13 @@ public class CallFeaturesSetting extends PreferenceActivity
         mIPPrefix = (PreferenceScreen) findPreference(BUTTON_IPPREFIX_KEY);
         mFlipAction = (ListPreference) findPreference(FLIP_ACTION_KEY);
         mButtonCallUiInBackground = (CheckBoxPreference) findPreference(BUTTON_CALL_UI_IN_BACKGROUND);
+        mNonIntrusiveUI = (CheckBoxPreference) findPreference(BUTTON_NON_INTRUSIVE_UI_KEY);
+
+        if (mNonIntrusiveUI != null) {
+            mNonIntrusiveUI.setChecked(Settings.Nameless.getBoolean(getContentResolver(),
+                    Settings.Nameless.NON_INTRUSIVE_UI, true));
+            mNonIntrusiveUI.setOnPreferenceChangeListener(this);
+        }
 
         if (mT9SearchInputLocale != null) {
             initT9SearchInputPreferenceList();
