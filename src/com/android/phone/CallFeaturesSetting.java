@@ -190,6 +190,7 @@ public class CallFeaturesSetting extends PreferenceActivity
     private static final String BUTTON_CDMA_OPTIONS = "button_cdma_more_expand_key";
 
     private static final String BUTTON_CALL_UI_IN_BACKGROUND = "bg_incall_screen";
+    private static final String BUTTON_NON_INTRUSIVE_UI_KEY = "non_intrusive_ui";
 
     private static final String VM_NUMBERS_SHARED_PREFERENCES_NAME = "vm_numbers";
 
@@ -296,6 +297,7 @@ public class CallFeaturesSetting extends PreferenceActivity
     private CheckBoxPreference mButtonAutoRetry;
     private CheckBoxPreference mButtonHAC;
     private CheckBoxPreference mButtonCallUiInBackground;
+    private CheckBoxPreference mNonIntrusiveUI;
     private ListPreference mButtonDTMF;
     private ListPreference mButtonTTY;
     private CheckBoxPreference mButtonNoiseSuppression;
@@ -615,6 +617,10 @@ public class CallFeaturesSetting extends PreferenceActivity
             Settings.System.putInt(mPhone.getContext().getContentResolver(),
                     Settings.System.CALL_UI_IN_BACKGROUND,
                     (Boolean) objValue ? 1 : 0);
+        } else if (preference == mNonIntrusiveUI){
+            Settings.Nameless.putBoolean(getContentResolver(),
+                    Settings.Nameless.NON_INTRUSIVE_UI, mNonIntrusiveUI.isChecked());
+            return true;
         } else if (preference == mMwiNotification) {
             int mwi_notification = mMwiNotification.isChecked() ? 1 : 0;
             Settings.System.putInt(mPhone.getContext().getContentResolver(),
@@ -1634,6 +1640,9 @@ public class CallFeaturesSetting extends PreferenceActivity
         mButtonNoiseSuppression = (CheckBoxPreference) findPreference(BUTTON_NOISE_SUPPRESSION_KEY);
         mButtonCallUiInBackground =
                 (CheckBoxPreference) findPreference(BUTTON_CALL_UI_IN_BACKGROUND);
+        mNonIntrusiveUI = (CheckBoxPreference) findPreference(BUTTON_NON_INTRUSIVE_UI_KEY);
+        mNonIntrusiveUI.setChecked(Settings.Nameless.getBoolean(getContentResolver(),
+                Settings.Nameless.NON_INTRUSIVE_UI, true));
         mVoicemailProviders = (ListPreference) findPreference(BUTTON_VOICEMAIL_PROVIDER_KEY);
         mButtonBlacklist = (PreferenceScreen) findPreference(BUTTON_BLACKLIST);
 
