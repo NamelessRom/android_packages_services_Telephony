@@ -618,9 +618,8 @@ public class CallFeaturesSetting extends PreferenceActivity
                     Settings.System.CALL_UI_IN_BACKGROUND,
                     (Boolean) objValue ? 1 : 0);
         } else if (preference == mNonIntrusiveUI){
-            Settings.Nameless.putBoolean(getContentResolver(),
-                    Settings.Nameless.NON_INTRUSIVE_UI, mNonIntrusiveUI.isChecked());
-            return true;
+            Settings.Nameless.putBoolean(mPhone.getContext().getContentResolver(),
+                    Settings.Nameless.NON_INTRUSIVE_UI, (Boolean) objValue);
         } else if (preference == mMwiNotification) {
             int mwi_notification = mMwiNotification.isChecked() ? 1 : 0;
             Settings.System.putInt(mPhone.getContext().getContentResolver(),
@@ -1641,8 +1640,11 @@ public class CallFeaturesSetting extends PreferenceActivity
         mButtonCallUiInBackground =
                 (CheckBoxPreference) findPreference(BUTTON_CALL_UI_IN_BACKGROUND);
         mNonIntrusiveUI = (CheckBoxPreference) findPreference(BUTTON_NON_INTRUSIVE_UI_KEY);
-        mNonIntrusiveUI.setChecked(Settings.Nameless.getBoolean(getContentResolver(),
-                Settings.Nameless.NON_INTRUSIVE_UI, true));
+        if (mNonIntrusiveUI != null) {
+            mNonIntrusiveUI.setChecked(Settings.Nameless.getBoolean(getContentResolver(),
+                    Settings.Nameless.NON_INTRUSIVE_UI, true));
+            mNonIntrusiveUI.setOnPreferenceChangeListener(this);
+        }
         mVoicemailProviders = (ListPreference) findPreference(BUTTON_VOICEMAIL_PROVIDER_KEY);
         mButtonBlacklist = (PreferenceScreen) findPreference(BUTTON_BLACKLIST);
 
