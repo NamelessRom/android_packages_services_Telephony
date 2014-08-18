@@ -191,6 +191,8 @@ public class CallFeaturesSetting extends PreferenceActivity
 
     private static final String BUTTON_INCOMING_CALL_STYLE = "button_incoming_call_style";
 
+    private static final String DIALKEY_PADDING = "dialkey_padding";
+
     private static final String BUTTON_GSM_UMTS_OPTIONS = "button_gsm_more_expand_key";
     private static final String BUTTON_CDMA_OPTIONS = "button_cdma_more_expand_key";
 
@@ -321,6 +323,7 @@ public class CallFeaturesSetting extends PreferenceActivity
     private CheckBoxPreference mButtonHAC;
     private CheckBoxPreference mButtonCallUiInBackground;
     private CheckBoxPreference mNonIntrusiveUI;
+    private ListPreference mDialkeyPadding;
     private ListPreference mButtonDTMF;
     private ListPreference mButtonTTY;
     private CheckBoxPreference mButtonNoiseSuppression;
@@ -649,6 +652,10 @@ public class CallFeaturesSetting extends PreferenceActivity
         } else if (preference == mNonIntrusiveUI){
             Settings.Nameless.putBoolean(mPhone.getContext().getContentResolver(),
                     Settings.Nameless.NON_INTRUSIVE_UI, (Boolean) objValue);
+       } else if (preference == mDialkeyPadding) {
+            final int val = Integer.valueOf((String) objValue);
+            Settings.System.putInt(getContentResolver(),
+                    Settings.System.DIALKEY_PADDING, val);
         } else if (preference == mVoicemailProviders) {
             final String newProviderKey = (String) objValue;
             if (DBG) {
@@ -1674,10 +1681,15 @@ public class CallFeaturesSetting extends PreferenceActivity
                     Settings.Nameless.NON_INTRUSIVE_UI, true));
             mNonIntrusiveUI.setOnPreferenceChangeListener(this);
         }
+        mDialkeyPadding = (ListPreference) findPreference(DIALKEY_PADDING);
         mVoicemailProviders = (ListPreference) findPreference(BUTTON_VOICEMAIL_PROVIDER_KEY);
         mButtonBlacklist = (PreferenceScreen) findPreference(BUTTON_BLACKLIST);
         mT9SearchInputLocale = (ListPreference) findPreference(BUTTON_T9_SEARCH_INPUT_LOCALE);
         mIncomingCallStyle = (ListPreference) findPreference(BUTTON_INCOMING_CALL_STYLE);
+
+        if (mDialkeyPadding != null) {
+            mDialkeyPadding.setOnPreferenceChangeListener(this);
+        }
 
         if (mVoicemailProviders != null) {
             mVoicemailProviders.setOnPreferenceChangeListener(this);
@@ -2045,6 +2057,12 @@ public class CallFeaturesSetting extends PreferenceActivity
             int callUiInBackground = Settings.System.getInt(getContentResolver(),
                     Settings.System.CALL_UI_IN_BACKGROUND, 0);
             mButtonCallUiInBackground.setChecked(callUiInBackground != 0);
+        }
+
+        if (mDialkeyPadding != null) {
+            int dialkeyPadding = Settings.System.getInt(getContentResolver(),
+                    Settings.System.DIALKEY_PADDING, 0);
+            mDialkeyPadding.setValue(String.valueOf(dialkeyPadding));
         }
 
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(
