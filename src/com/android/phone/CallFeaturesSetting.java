@@ -205,6 +205,7 @@ public class CallFeaturesSetting extends PreferenceActivity
 
     private static final String BUTTON_CALL_UI_IN_BACKGROUND = "bg_incall_screen";
     private static final String BUTTON_NON_INTRUSIVE_UI_KEY = "non_intrusive_ui";
+    private static final String DIALKEY_PADDING = "dialkey_padding";
 
     private static final String VM_NUMBERS_SHARED_PREFERENCES_NAME = "vm_numbers";
 
@@ -332,6 +333,7 @@ public class CallFeaturesSetting extends PreferenceActivity
     private CheckBoxPreference mButtonHAC;
     private CheckBoxPreference mButtonCallUiInBackground;
     private CheckBoxPreference mNonIntrusiveUI;
+    private ListPreference mDialkeyPadding;
     private ListPreference mButtonDTMF;
     private ListPreference mButtonTTY;
     private CheckBoxPreference mButtonNoiseSuppression;
@@ -690,6 +692,10 @@ public class CallFeaturesSetting extends PreferenceActivity
         } else if (preference == mNonIntrusiveUI){
             Settings.Nameless.putBoolean(mPhone.getContext().getContentResolver(),
                     Settings.Nameless.NON_INTRUSIVE_UI, (Boolean) objValue);
+       } else if (preference == mDialkeyPadding) {
+            final int val = Integer.valueOf((String) objValue);
+            Settings.System.putInt(getContentResolver(),
+                    Settings.System.DIALKEY_PADDING, val);
         } else if (preference == mVoicemailProviders) {
             final String newProviderKey = (String) objValue;
             log("Voicemail Provider changes from \"" + mPreviousVMProviderKey
@@ -1686,9 +1692,15 @@ public class CallFeaturesSetting extends PreferenceActivity
         mIncomingCallStyle = (ListPreference) findPreference(BUTTON_INCOMING_CALL_STYLE);
         mButtonProximity = (CheckBoxPreference) findPreference(BUTTON_PROXIMITY_KEY);
         mIPPrefix = (PreferenceScreen) findPreference(BUTTON_IPPREFIX_KEY);
+
         mFlipAction = (ListPreference) findPreference(FLIP_ACTION_KEY);
         mButtonCallUiInBackground = (CheckBoxPreference) findPreference(BUTTON_CALL_UI_IN_BACKGROUND);
         mNonIntrusiveUI = (CheckBoxPreference) findPreference(BUTTON_NON_INTRUSIVE_UI_KEY);
+        mDialkeyPadding = (ListPreference) findPreference(DIALKEY_PADDING);
+
+        if (mDialkeyPadding != null) {
+            mDialkeyPadding.setOnPreferenceChangeListener(this);
+        }
 
         if (mNonIntrusiveUI != null) {
             mNonIntrusiveUI.setChecked(Settings.Nameless.getBoolean(getContentResolver(),
@@ -1944,6 +1956,12 @@ public class CallFeaturesSetting extends PreferenceActivity
             int callUiInBackground = Settings.System.getInt(getContentResolver(),
                     Settings.System.CALL_UI_IN_BACKGROUND, 0);
             mButtonCallUiInBackground.setChecked(callUiInBackground != 0);
+        }
+
+        if (mDialkeyPadding != null) {
+            int dialkeyPadding = Settings.System.getInt(getContentResolver(),
+                    Settings.System.DIALKEY_PADDING, 0);
+            mDialkeyPadding.setValue(String.valueOf(dialkeyPadding));
         }
 
         if (mFlipAction != null) {
