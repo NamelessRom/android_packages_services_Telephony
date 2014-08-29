@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Copyright (C) 2014 The NamelessROM Project
+
+  This program is free software: you can redistribute it and/or modify
+  it under the terms of the GNU General Public License as published by
+  the Free Software Foundation, either version 2 of the License, or
+  (at your option) any later version.
+
+  This program is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU General Public License for more details.
+
+  You should have received a copy of the GNU General Public License
+  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ -->
+
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <!-- Setting title for the flip action setting. -->
+    <string name="flip_action_title">Umdreh-Aktion</string>
+
+    <!-- Dialog title of the flip action setting. -->
+    <string name="flip_action_dialog_title">Drehe Telefon um\u2026</string>
+
+    <!-- Setting summary for the flip action setting. -->
+    <string name="flip_action_summary">Beim Umdrehen des Telefons wird <xliff:g id="action">%s</xliff:g></string>
+
+    <!-- Values for the flip action settings. -->
+    <string-array name="flip_action_setting_values" translatable="false">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+    </string-array>
+
+    <!-- Values for flip action array entries -->
+    <string name="entry_do_nothing">Nichts machen</string>
+    <string name="entry_mute_ringer">Lautstärke stummschalten</string>
+    <string name="entry_dismiss_call">Anruf abweisen</string>
+    <string name="summary_do_nothing">nichts gemacht</string>
+    <string name="summary_mute_ringer">die Lautstärke stummgeschalten</string>
+    <string name="summary_dismiss_call">der Anruf abgewiesen</string>
+
+    <!-- Entries listed in the setting for the flip action. -->
+    <string-array name="flip_action_setting_entries">
+        <item>@string/entry_do_nothing</item>
+        <item>@string/entry_mute_ringer</item>
+        <item>@string/entry_dismiss_call</item>
+    </string-array>
+
+    <!-- Summary texts for flip action. Must be ordered by numerical
+         value (do nothing = 0, mute = 1, dismiss = 2) -->
+    <string-array name="flip_action_summary_entries">
+        <item>@string/summary_do_nothing</item>
+        <item>@string/summary_mute_ringer</item>
+        <item>@string/summary_dismiss_call</item>
+    </string-array>
+
+    <!-- Call UI in background -->
+    <string name="bg_incall">Eingehender Anruf im Hintergrund</string>
+    <string name="bg_incall_summary">Behält den Anruf-Dialog im Hintergrund wenn der Bildschirm an ist, zeigt nur eine Benachrichtigung und speilt den Klingelton</string>
+
+    <!-- Non intrusive UI -->
+    <string name="non_intrusive_ui">Unaufdringlicher Anruf-Dialog</string>
+    <string name="non_intrusive_ui_summary">Benutzt den unaufdringlichen Anruf-Dialog für eingehende Anrufe</string>
+
+    <!-- Setting title for dialpad key padding. -->
+    <string name="dialkey_padding_title">Wählfeldtastenabstand</string>
+
+    <!-- Dialog title of the dialpad key padding setting. -->
+    <string name="dialkey_padding_dialog_title">Abstand für Wählfeldtasten</string>
+
+    <!-- Setting summary for the dialpad key padding setting. -->
+    <string name="dialkey_padding_summary">Abstand nach oben und unten der Wählfeldtasten</string>
+
+    <!-- Values for dialpad key padding array entries. -->
+    <string name="entry_0dip">0dip</string>
+    <string name="entry_5dip">5dip</string>
+    <string name="entry_10dip">10dip</string>
+    <string name="entry_15dip">15dip</string>
+    <string name="entry_20dip">20dip</string>
+    <string name="entry_25dip">25dip</string>
+
+    <!-- Values for dialpad key padding. -->
+    <string-array name="dialkey_padding_setting_values" translatable="false">
+        <item>0</item>
+        <item>5</item>
+        <item>10</item>
+        <item>15</item>
+        <item>20</item>
+        <item>25</item>
+    </string-array>
+
+    <!-- Entries listed in the setting for dialkey padding. -->
+    <string-array name="dialkey_padding_setting_entries">
+        <item>@string/entry_0dip</item>
+        <item>@string/entry_5dip</item>
+        <item>@string/entry_10dip</item>
+        <item>@string/entry_15dip</item>
+        <item>@string/entry_20dip</item>
+        <item>@string/entry_25dip</item>
+    </string-array>
+
+</resources>
