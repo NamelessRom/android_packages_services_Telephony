@@ -83,4 +83,13 @@
   <string name="msim_call_selector_title"><xliff:g id="number">%s</xliff:g> anrufen über</string>
   <string name="msim_call_selector_item">SIM<xliff:g id="index">%1$d</xliff:g>: <xliff:g id="operator">%2$s</xliff:g></string>
   <string name="cyngn_reverse_lookup_provider_name">Cyngn Chinesisch (CN)</string>
+    <!-- dialpad t9 search -->
+    <string name="preference_category_t9_dialpad_search">Wählfeld T9 Suche</string>
+    <string name="t9_search_input_locale">T9 Sucheingabe</string>
+    <string name="t9_search_input_locale_default">Standard</string>
+
+    <!-- Incoming call style -->
+    <string name="incoming_call_style_title">Eingehender Anruf-Anzeigestil</string>
+    <string name="incoming_call_style_classic">Classic</string>
+    <string name="incoming_call_style_fullscreen_photo">Vollbild-Anruferfoto</string>
 </resources>
