@@ -159,6 +159,7 @@
   <ListPreference
       android:key="dialkey_padding"
       android:title="@string/dialkey_padding_title"
+      android:summary="@string/dialkey_padding_summary"
       android:dialogTitle="@string/dialkey_padding_dialog_title"
       android:entries="@array/dialkey_padding_setting_entries"
       android:entryValues="@array/dialkey_padding_setting_values"
