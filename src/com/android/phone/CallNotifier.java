@@ -417,8 +417,7 @@ public class CallNotifier extends Handler
         Call ringing = c.getCall();
         Phone phone = ringing.getPhone();
 
-        hideUssdResponseDialog();
-
+        PhoneUtils.maybeShowOrHideUssdDialog(false);
         // Check for a few cases where we totally ignore incoming calls.
         if (ignoreAllIncomingCalls(phone)) {
             // Immediately reject the call, without even indicating to the user
@@ -1104,9 +1103,7 @@ public class CallNotifier extends Handler
 
     protected void onDisconnect(AsyncResult r) {
         if (VDBG) log("onDisconnect()...  CallManager state: " + mCM.getState());
-
-        showUssdResponseDialog();
-
+        PhoneUtils.maybeShowOrHideUssdDialog(true);
         mVoicePrivacyState = false;
         Connection c = (Connection) r.result;
         if (c != null) {

@@ -3702,4 +3702,14 @@ public class PhoneUtils {
             return false;
         }
     }
+
+    public static void maybeShowOrHideUssdDialog(boolean show) {
+        if (sUssdDialog == null) return;
+        if (sUssdDialog.isShowing() && !show) {
+            sUssdDialog.hide();
+        } else {
+            sUssdDialog.show();
+        }
+
+    }
 }
