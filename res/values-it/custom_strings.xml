@@ -16,4 +16,21 @@
   You should have received a copy of the GNU General Public License
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
  -->
-<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2"/>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+  <string name="flip_action_title">Azione capovolgimento</string>
+  <string name="flip_action_dialog_title">Capovolgi il dispositivo verso\u2026</string>
+  <string name="flip_action_summary">Capovolgere il telefono verso il basso: <xliff:g id="action">%s</xliff:g></string>
+  <string name="entry_do_nothing">Non fare nulla</string>
+  <string name="entry_mute_ringer">Silenzia suoneria</string>
+  <string name="entry_dismiss_call">Respingi la chiamata</string>
+  <string name="summary_do_nothing">Non fare nulla</string>
+  <string name="summary_mute_ringer">Silenzia la suoneria</string>
+  <string name="summary_dismiss_call">Respingi la chiamata</string>
+  <string name="bg_incall">Chiamata in arrivo in background</string>
+  <string name="bg_incall_summary">A schermo acceso, le chiamate saranno mantenute in background mostrando solo una notifica, emettendo comunque la suoneria</string>
+  <string name="non_intrusive_ui">Finestra di dialogo non intrusiva</string>
+  <string name="non_intrusive_ui_summary">Non utilizzare la modalità a pieno schermo per le chiamate in arrivo</string>
+  <string name="dialkey_padding_title">Padding del tastierino numerico</string>
+  <string name="dialkey_padding_dialog_title">Padding del tastierino numerico</string>
+  <string name="dialkey_padding_summary">Quantità di padding sopra e sotto il tastierino numerico</string>
+</resources>

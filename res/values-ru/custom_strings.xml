@@ -16,4 +16,21 @@
   You should have received a copy of the GNU General Public License
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
  -->
-<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2"/>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+  <string name="flip_action_title">Переворот</string>
+  <string name="flip_action_dialog_title">Перевернуть устройство на</string>
+  <string name="flip_action_summary">При повороте телефона <xliff:g id="action">%s</xliff:g></string>
+  <string name="entry_do_nothing">Ничего не делать</string>
+  <string name="entry_mute_ringer">Отключить звонок</string>
+  <string name="entry_dismiss_call">Отклонить вызов</string>
+  <string name="summary_do_nothing">ничего не делать</string>
+  <string name="summary_mute_ringer">отключить звонок</string>
+  <string name="summary_dismiss_call">отклонить вызов</string>
+  <string name="bg_incall">Входящий вызов в фоновом режиме</string>
+  <string name="bg_incall_summary">Скрывать интерфейс входящего вызова при использовании экрана, вместо этого отображать уведомление с воспроизведением мелодии звонка</string>
+  <string name="non_intrusive_ui">Деликатный режим отображения диалога</string>
+  <string name="non_intrusive_ui_summary">Использовать деликатный режим отображения входящих вызовов</string>
+  <string name="dialkey_padding_title">Отступ клавиш набора</string>
+  <string name="dialkey_padding_dialog_title">Отступ для клавиш набора номера</string>
+  <string name="dialkey_padding_summary">Расстояние отступа от верха и низа клавиши</string>
+</resources>
